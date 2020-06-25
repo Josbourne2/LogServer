@@ -1,0 +1,64 @@
+﻿@page
+@model LogServer.Web.Pages.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>LogEvent</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="LogEvent.Timestamp" class="control-label"></label>
+                <input asp-for="LogEvent.Timestamp" class="form-control" />
+                <span asp-validation-for="LogEvent.Timestamp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LogEvent.Level" class="control-label"></label>
+                <input asp-for="LogEvent.Level" class="form-control" />
+                <span asp-validation-for="LogEvent.Level" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LogEvent.RenderedMessage" class="control-label"></label>
+                <input asp-for="LogEvent.RenderedMessage" class="form-control" />
+                <span asp-validation-for="LogEvent.RenderedMessage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LogEvent.MessageTemplate" class="control-label"></label>
+                <input asp-for="LogEvent.MessageTemplate" class="form-control" />
+                <span asp-validation-for="LogEvent.MessageTemplate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LogEvent.Properties" class="control-label"></label>
+                <input asp-for="LogEvent.Properties" class="form-control" />
+                <span asp-validation-for="LogEvent.Properties" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LogEvent.Exception" class="control-label"></label>
+                <input asp-for="LogEvent.Exception" class="form-control" />
+                <span asp-validation-for="LogEvent.Exception" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LogEvent.CorrelationId" class="control-label"></label>
+                <input asp-for="LogEvent.CorrelationId" class="form-control" />
+                <span asp-validation-for="LogEvent.CorrelationId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
