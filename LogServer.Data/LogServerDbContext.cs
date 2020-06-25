@@ -6,22 +6,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LogServer.Data
 {
-    public class LogServerDbContext :DbContext
+    public class LogServerDbContext : DbContext
     {
-
-        public LogServerDbContext() 
+        public LogServerDbContext()
         {
-            
         }
+
         public LogServerDbContext(DbContextOptions options)
             : base(options)
         {
-          
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //Elke Persoon komt met een BSN. Dit is ook de database key dus hier wil je geen Id voor genereren in de database.
             modelBuilder.Entity<LogEvent>()
                 .Property(e => e.Id)
                 .UseIdentityColumn();
@@ -33,7 +30,6 @@ namespace LogServer.Data
             modelBuilder.Entity<LogEvent>()
                 .Property(e => e.Properties)
                 .HasColumnType("VARCHAR(4000)");
-                
         }
 
         public DbSet<LogEvent> LogEvents { get; set; }
