@@ -14,7 +14,7 @@ namespace LogServer.DemoClientConsoleApp
 
             request.Headers.Add("X-Correlation-ID", correlationId.ToString());
             HttpResponseMessage response = client.SendAsync(request).GetAwaiter().GetResult();
-            Console.WriteLine($"Webpagina opgevraagd met correlatio n id: {correlationId}");
+            Console.WriteLine($"Webpagina opgevraagd met cor relatio n id: {correlationId}");
         }
     }
 }
