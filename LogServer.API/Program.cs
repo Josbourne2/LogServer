@@ -14,7 +14,25 @@ namespace LogServer.API
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            Log.Logger = new LoggerConfiguration()
+           .Enrich.FromLogContext()
+           .WriteTo.Console()
+           .CreateLogger();
+
+            try
+            {
+                Log.Information("Starting up");
+                Serilog.Debugging.SelfLog.Enable(msg => Log.Logger.Information(msg));
+                CreateHostBuilder(args).Build().Run();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Application start-up failed");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -23,10 +41,10 @@ namespace LogServer.API
                 {
                     webBuilder.UseStartup<Startup>()
                     .UseSerilog((hostingContext, loggerConfiguration) =>
-                    loggerConfiguration                    
-                        .WriteTo.Console()                        
+                    loggerConfiguration
+                        .WriteTo.Console()
                         .Enrich.FromLogContext());
-                //.UseUrls("http://+:5000");
+                    //.UseUrls("http://+:50000");
                 });
     }
 }

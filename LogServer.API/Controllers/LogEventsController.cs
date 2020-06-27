@@ -77,6 +77,18 @@ namespace LogServer.API.Controllers
         // POST: api/LogEvents
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        //[HttpPost]
+        //public async Task PostLogEvent(int? inkomstenverstrekkerId, [FromBody] object logEvents)
+        //{
+        //    Console.WriteLine(logEvents.ToString());
+        //    //var logs = Mapper.GetLogEventSet(logEvents.Events);
+        //    //_context.LogEvents.AddRange(logs);
+        //    //await _context.SaveChangesAsync();
+        //}
+
+        // POST: api/LogEvents
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
         public async Task PostLogEvent(int? inkomstenverstrekkerId, [FromBody] LogEventDtoArray logEvents)
         {

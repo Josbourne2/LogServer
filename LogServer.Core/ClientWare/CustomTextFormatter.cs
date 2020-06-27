@@ -9,27 +9,26 @@ using Serilog.Formatting;
 using Serilog.Formatting.Json;
 using Serilog.Parsing;
 
-namespace LogServer.Web
+namespace LogServer.Core
 {
-    class CustomTextFormatter : ITextFormatter
+    public class CustomTextFormatter : ITextFormatter
     {
-
         /// <summary>
         /// Gets or sets a value indicating whether the message is rendered into JSON.
         /// </summary>
         protected bool IsRenderingMessage { get; set; }
 
-
         public CustomTextFormatter()
         {
             IsRenderingMessage = true;
         }
+
         /// <summary>
         /// Format the log event into the output.
         /// </summary>
         /// <param name="logEvent">The event to format.</param>
         /// <param name="output">The output.</param>
-        public void Format(LogEvent logEvent, TextWriter output)
+        public void Format(Serilog.Events.LogEvent logEvent, TextWriter output)
         {
             try
             {
@@ -45,7 +44,7 @@ namespace LogServer.Web
             }
         }
 
-        private void FormatContent(LogEvent logEvent, TextWriter output)
+        private void FormatContent(Serilog.Events.LogEvent logEvent, TextWriter output)
         {
             if (logEvent == null) throw new ArgumentNullException(nameof(logEvent));
             if (output == null) throw new ArgumentNullException(nameof(output));
@@ -58,18 +57,15 @@ namespace LogServer.Web
 
             LogEventPropertyValue value;
             logEvent.Properties.TryGetValue("CorrelationId", out value);
-            
-            if(value!=null)
+
+            if (value != null)
             {
                 output.Write("\",\"CorrelationId\":\"");
                 output.Write(value.ToString());
             }
-            
 
             output.Write("\",\"MessageTemplate\":");
             JsonValueFormatter.WriteQuotedJsonString(logEvent.MessageTemplate.Text, output);
-
-
 
             if (IsRenderingMessage)
             {
@@ -164,7 +160,7 @@ namespace LogServer.Web
             output.Write('}');
         }
 
-        private static void LogNonFormattableEvent(LogEvent logEvent, Exception e)
+        private static void LogNonFormattableEvent(Serilog.Events.LogEvent logEvent, Exception e)
         {
             SelfLog.WriteLine(
                 "Event at {0} with message template {1} could not be formatted into JSON and will be dropped: {2}",
@@ -172,9 +168,8 @@ namespace LogServer.Web
                 logEvent.MessageTemplate.Text,
                 e);
         }
-
-
     }
+
     internal static class ValueFormatter
     {
         internal static readonly JsonValueFormatter Instance = new JsonValueFormatter();

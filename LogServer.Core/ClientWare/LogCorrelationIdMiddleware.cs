@@ -5,7 +5,7 @@ using Serilog.Context;
 using System;
 using System.Threading.Tasks;
 
-namespace LogServer.Web
+namespace LogServer.Core
 {
     public static class LogCorrelationIdMiddlewareExtensions
     {
@@ -30,11 +30,11 @@ namespace LogServer.Web
 
         public async Task Invoke(HttpContext httpContext)
         {
-            string correlationId = GetOrSetCorrelationId(httpContext);
+            Guid correlationId = GetOrSetCorrelationId(httpContext);
 
             try
             {
-                using (LogContext.PushProperty("CorrelationId", correlationId, true))
+                using (LogContext.PushProperty("CorrelationId", correlationId))
                 {
                     await _next(httpContext);
                 }
@@ -46,13 +46,13 @@ namespace LogServer.Web
             }
         }
 
-        private string GetOrSetCorrelationId(HttpContext httpContext)
+        private Guid GetOrSetCorrelationId(HttpContext httpContext)
         {
             if (string.IsNullOrWhiteSpace(httpContext.Request.Headers[header]))
             {
                 httpContext.Request.Headers[header] = Guid.NewGuid().ToString();
             }
-            return httpContext.Request.Headers[header];
+            return Guid.Parse(httpContext.Request.Headers[header]);
         }
     }
 }

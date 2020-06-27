@@ -1,11 +1,14 @@
-﻿using Serilog.Sinks.Http;
+﻿using Microsoft.Extensions.Logging;
+using Serilog.Core;
+using Serilog.Sinks.Http;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace LogServer.Web
+namespace LogServer.Core
 {
     public class CustomHttpClient : IHttpClient
     {
@@ -17,9 +20,11 @@ namespace LogServer.Web
             httpClient.DefaultRequestHeaders.Add("X-Api-Key", "secret-api-key");
         }
 
-        public Task<HttpResponseMessage> PostAsync(string requestUri, HttpContent content) => httpClient.PostAsync(requestUri, content);
+        public Task<HttpResponseMessage> PostAsync(string requestUri, HttpContent content)
+        {            
+            return httpClient.PostAsync(requestUri, content);
+        }
 
         public void Dispose() => httpClient?.Dispose();
     }
 }
-

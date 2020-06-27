@@ -6,17 +6,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LogServer.Data
 {
-    public class LogServerDbContext :DbContext
+    public class LogServerDbContext : DbContext
     {
-
-        public LogServerDbContext() 
+        public LogServerDbContext()
         {
-            
         }
+
         public LogServerDbContext(DbContextOptions options)
             : base(options)
         {
-          
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -33,7 +31,6 @@ namespace LogServer.Data
             modelBuilder.Entity<LogEvent>()
                 .Property(e => e.Properties)
                 .HasColumnType("VARCHAR(4000)");
-                
         }
 
         public DbSet<LogEvent> LogEvents { get; set; }
