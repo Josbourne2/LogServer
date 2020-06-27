@@ -19,7 +19,6 @@ namespace LogServer.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //Elke Persoon komt met een BSN. Dit is ook de database key dus hier wil je geen Id voor genereren in de database.
             modelBuilder.Entity<LogEvent>()
                 .Property(e => e.Id)
                 .UseIdentityColumn();
