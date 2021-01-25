@@ -2,8 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LogServer.Data;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -23,7 +26,11 @@ namespace LogServer.API
             {
                 Log.Information("Starting up");
                 Serilog.Debugging.SelfLog.Enable(msg => Log.Logger.Information(msg));
-                CreateHostBuilder(args).Build().Run();
+                var host = CreateHostBuilder(args).Build();
+
+                MigrateDatabase(host);
+
+                host.Run();
             }
             catch (Exception ex)
             {
@@ -32,6 +39,16 @@ namespace LogServer.API
             finally
             {
                 Log.CloseAndFlush();
+            }
+        }
+
+        private static void MigrateDatabase(IHost host)
+        {
+            using (var scope = host.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<LogServerDbContext>();
+                db.Database.SetCommandTimeout(3600);
+                db.Database.Migrate();
             }
         }
 
